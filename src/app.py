@@ -3,6 +3,7 @@ Import section
 """
 # import os
 from flask import Flask, jsonify
+from flask_restx import Api, Resource, fields
 # from flask_swagger import swagger
 # from flask_swagger_ui import get_swaggerui_blueprint
 # from flask_sqlalchemy import SQLAlchemy
@@ -26,6 +27,11 @@ from flask import Flask, jsonify
 
 def create_app():
     app = Flask(__name__)
+    api = Api(app, version='1.0', title='My API',
+          description='A simple API',
+          doc='/docs')  # Swagger UI served at /docs
+
+    # ns = api.namespace('recommendations', description='Items operations')
 
     # Load environment variables from .env
     # load_dotenv()
@@ -77,9 +83,10 @@ def create_app():
     #     swag['info']['title'] = "Recommendation System API"
     #     return jsonify(swag)
 
-    @app.route("/")
-    def hello():
-        return "ai kamu kemana ahii deh heheh!"
+    @api.route("/hello")
+    class HelloWorld(Resource):
+        def get(self):
+            return "hello world"
     # Route to serve Swagger UI
     # swaggerui_blueprint = get_swaggerui_blueprint('/docs', '/spec')
     # app.register_blueprint(swaggerui_blueprint, url_prefix='/docs')
