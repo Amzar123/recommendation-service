@@ -1,12 +1,12 @@
 """
 Import section
 """
-# import os
+import os
 from flask import Flask, jsonify
 from flask_restx import Api, Resource, fields
 # from flask_swagger import swagger
 # from flask_swagger_ui import get_swaggerui_blueprint
-# from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 # from flask_migrate import Migrate
 # from dotenv import load_dotenv
 
@@ -23,7 +23,7 @@ from flask_restx import Api, Resource, fields
 # from src.service.recommendation_service import RecommendationService
 # from src.service.auth_service import AuthService
 
-# db = SQLAlchemy()
+db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
@@ -36,20 +36,28 @@ def create_app():
     # Load environment variables from .env
     # load_dotenv()
 
-    # DB_USERNAME = os.getenv("DATABASE_USER")
-    # DB_NAME = os.getenv("DATABASE_NAME")
-    # DB_HOST = os.getenv("DATABASE_HOST")
-    # DB_PORT = os.getenv("DATABASE_PORT")
-    # DB_PASSWORD = os.getenv("DB_PW")
+    DB_USERNAME = os.getenv("DB_USERNAME")
+    DB_NAME = os.getenv("DB_NAME")
+    DB_HOST = os.getenv("DB_HOST")
+    DB_PORT = os.getenv("DB_PORT")
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
 
-    # DB_URL = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    DB_URL = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-    # # Konfigurasi koneksi database
-    # app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
-    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # Konfigurasi koneksi database
+    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    # # Initialize db
-    # db.init_app(app)
+    # Initialize db
+    db.init_app(app)
+
+    # Connection checking for db 
+    with app.app_context():
+        try:
+            db.engine.connect()
+            print("Connected to the database")
+        except Exception as e:
+            print("Failed to connect to the database:", str(e))
 
     # # Migration
     # Migrate(app, db)
@@ -90,13 +98,6 @@ def create_app():
     # Route to serve Swagger UI
     # swaggerui_blueprint = get_swaggerui_blueprint('/docs', '/spec')
     # app.register_blueprint(swaggerui_blueprint, url_prefix='/docs')
-
-    # with app.app_context():
-    #     try:
-    #         db.engine.connect()
-    #         print("Connected to the database")
-    #     except Exception as e:
-    #         print("Failed to connect to the database:", str(e))
 
     return app
 

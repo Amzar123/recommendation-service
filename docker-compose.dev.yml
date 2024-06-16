@@ -10,6 +10,8 @@ services:
       - db-service
     volumes:
       - .:/app
+    env_file:
+      - .env
   db-service:
     image: postgres:16.2
     restart: on-failure
