@@ -1,0 +1,40 @@
+# Python
+*.pyc
+__pycache__/
+venv/
+*.py[cod]
+
+# Flask
+instance/
+.webassets-cache
+
+# Environment
+.env
+.env.*
+.env.local
+.env.dev
+.env.prod
+
+# Logs
+*.log
+logs/
+
+# Database
+db.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Compiled files
+*.pyd
+*.so
+*.o
+*.dll
+*.exe
+*.out
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
