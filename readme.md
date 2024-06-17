@@ -21,3 +21,14 @@ To run the application using Docker and Docker Compose, follow these steps:
 5. The application will now be running on `http://localhost:80`.
 
 6. You can access the application in your browser by navigating to `http://localhost:80`.
+
+# Migration 
+## Upgrade database 
+1. flask db init
+2. flask db migrate -m "first migration"
+3. flask db upgrade -- for apply changes on db 
+
+## Downgrade database
+```
+flask db downgrade
+```

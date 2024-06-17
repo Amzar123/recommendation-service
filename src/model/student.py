@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
 db_model = SQLAlchemy()
-class Student:
+class Student(db_model.Model):
     __tablename__ = 'students'
 
     id = db_model.Column(db_model.String, primary_key=True)

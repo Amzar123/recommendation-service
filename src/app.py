@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_restx import Api, Resource, fields
 from flask_sqlalchemy import SQLAlchemy
-# from flask_migrate import Migrate
-# from dotenv import load_dotenv
+from flask_migrate import Migrate
+from dotenv import load_dotenv
 
 # Import controller
 from src.controller.recommendation_controller import RecommendationController
@@ -22,7 +22,6 @@ from src.repo.teacher_repo import TeacherRepo
 from src.service.recommendation_service import RecommendationService
 from src.service.auth_service import AuthService
 
-db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
@@ -47,6 +46,8 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    db = SQLAlchemy(app)
+
     # Initialize db
     db.init_app(app)
 
@@ -58,8 +59,37 @@ def create_app():
         except Exception as e:
             print("Failed to connect to the database:", str(e))
 
-    # # Migration
-    # Migrate(app, db)
+    # Migration
+    migrate = Migrate(app, db)
+
+    class Student(db.Model):
+        __tablename__ = 'students'
+
+        id = db.Column(db.String, primary_key=True)
+        name = db.Column(db.String(50))
+        email = db.Column(db.String(50))
+        password = db.Column(db.String(50))
+        institution = db.Column(db.String(50))
+        code = db.Column(db.String(50))
+        created_at = db.Column(db.DateTime)
+        updated_at = db.Column(db.DateTime)
+
+        def __init__(
+                self,
+                name,
+                email,
+                password,
+                code,
+                institution,
+                created_at,
+                updated_at):
+            self.name = name
+            self.email = email
+            self.password = password
+            self.institution = institution
+            self.code = code
+            self.created_at = created_at
+            self.updated_at = updated_at
 
     # Register the blueprint from the repository
     recommendation_repository = RecommendationRepo(db)
