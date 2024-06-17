@@ -1,5 +1,5 @@
 # base image 
-FROM python:3.12.4-alpine
+FROM python:3.8.19-slim-bookworm
 
 # set working directory
 WORKDIR /app 

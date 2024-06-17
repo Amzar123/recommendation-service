@@ -1,5 +1,5 @@
 from src.app import create_app
-from gunicorn.app.base import BaseApplication
+from gunicorn.app.base import BaseApplication # type: ignore
 
 # Create an application instance using the factory function
 app = create_app()

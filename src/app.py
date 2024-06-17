@@ -2,26 +2,25 @@
 Import section
 """
 import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_restx import Api, Resource, fields
-# from flask_swagger import swagger
-# from flask_swagger_ui import get_swaggerui_blueprint
 from flask_sqlalchemy import SQLAlchemy
 # from flask_migrate import Migrate
 # from dotenv import load_dotenv
 
-# # Import controller
-# from src.controller.recommendation_controller import RecommendationController
-# from src.controller.auth_controller import AuthController
+# Import controller
+from src.controller.recommendation_controller import RecommendationController
+from src.controller.auth_controller import AuthController
 
-# # Import repository
-# from src.repository.recommendation_repo import RecommendationRepo
-# from src.repository.student_repo import StudentRepo
-# from src.repository.teacher_repo import TeacherRepo
+# Import repository
+from src.repo.recommendation_repo import RecommendationRepo
+from src.repo.student_repo import StudentRepo
+from src.repo.teacher_repo import TeacherRepo
 
-# # Import service
-# from src.service.recommendation_service import RecommendationService
-# from src.service.auth_service import AuthService
+# Import service
+from src.service.recommendation_service import RecommendationService
+from src.service.auth_service import AuthService
 
 db = SQLAlchemy()
 
@@ -33,8 +32,8 @@ def create_app():
 
     # ns = api.namespace('recommendations', description='Items operations')
 
-    # Load environment variables from .env
-    # load_dotenv()
+    # Load environment variables from .env file
+    load_dotenv()
 
     DB_USERNAME = os.getenv("DB_USERNAME")
     DB_NAME = os.getenv("DB_NAME")
@@ -62,42 +61,30 @@ def create_app():
     # # Migration
     # Migrate(app, db)
 
-    # # Register the blueprint from the repository
-    # recommendation_repository = RecommendationRepo(db)
-    # student_repo = StudentRepo(db)
-    # teacher_repo = TeacherRepo(db)
+    # Register the blueprint from the repository
+    recommendation_repository = RecommendationRepo(db)
+    student_repo = StudentRepo(db)
+    teacher_repo = TeacherRepo(db)
 
-    # # Register the blueprint from the service
-    # recommendation_service = RecommendationService(
-    #     recommendation_repository, student_repo)
-    # auth_service = AuthService(teacher_repo, student_repo)
+    # Register the blueprint from the service
+    recommendation_service = RecommendationService(
+        recommendation_repository, student_repo)
+    auth_service = AuthService(teacher_repo, student_repo)
 
-    # # Register the blueprint from the controller
-    # recommendation_controller = RecommendationController(recommendation_service)
-    # auth_controller = AuthController(auth_service)
+    # Register the blueprint from the controller
+    recommendation_controller = RecommendationController(recommendation_service)
+    auth_controller = AuthController(auth_service)
 
-    # app.register_blueprint(
-    #     recommendation_controller.blueprint,
-    #     url_prefix='/recommendations')
-    # app.register_blueprint(auth_controller.blueprint)
+    app.register_blueprint(
+        recommendation_controller.blueprint,
+        url_prefix='/recommendations')
+    app.register_blueprint(auth_controller.blueprint)
 
-    # @app.route("/spec")
-    # def spec():
-    #     """
-    #     This function is to initialize API spec
-    #     """
-    #     swag = swagger(app)
-    #     swag['info']['version'] = "1.0"
-    #     swag['info']['title'] = "Recommendation System API"
-    #     return jsonify(swag)
 
     @api.route("/hello")
     class HelloWorld(Resource):
         def get(self):
             return "hello world"
-    # Route to serve Swagger UI
-    # swaggerui_blueprint = get_swaggerui_blueprint('/docs', '/spec')
-    # app.register_blueprint(swaggerui_blueprint, url_prefix='/docs')
 
     return app
 
