@@ -8,6 +8,7 @@ from flask_restx import Api, Resource, fields
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from dotenv import load_dotenv
+from flask_seeder import FlaskSeeder
 
 # Import controller
 from src.controller.recommendation_controller import RecommendationController
@@ -60,15 +61,19 @@ def create_app():
             print("Failed to connect to the database:", str(e))
 
     # Migration
-    migrate = Migrate(app, db)
+    # migrate = Migrate(app, db)
 
-    # Migrate models
-    migrate.init_app(app, db)
+    # # Migrate models
+    # migrate.init_app(app, db)
     
-    db.create_all()
+    # db.create_all()
 
-    # Define models to migrate
-    db.create_all(app=app)
+    # # Define models to migrate
+    # db.create_all(app=app)
+
+    # Seeder 
+    seeder = FlaskSeeder()
+    seeder.init_app(app, db)
 
     # Register the blueprint from the repository
     recommendation_repository = RecommendationRepo(db)
