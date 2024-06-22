@@ -9,9 +9,7 @@ from multiprocessing import Pool
 
 from mlxtend.frequent_patterns import fpgrowth, association_rules
 
-
 import pandas as pd
-
 
 class RecommendationService:
     """
