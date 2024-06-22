@@ -171,7 +171,7 @@ class RecommendationController:
                 message='Invalid request content type',
                 code=400
             ).to_dict()
-
+        
         if not request.is_json:
             return Response(
                 message='Request body must be a valid JSON object',

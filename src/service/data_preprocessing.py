@@ -1,6 +1,7 @@
 from mlxtend.preprocessing import TransactionEncoder
 import pandas as pd
 
+
 from src.service.nlg_core import NLGCore
 
 
@@ -12,121 +13,37 @@ class DataPreProcessing:
     def __init__(self) -> None:
         self.obj_nlg = NLGCore()
 
-    def recommend_materials(self, student_competencies, rules):
+    def recommend_materials(self, student_data, rules, competency_to_material, material_details):
         """
-        Generate recommendation materials
+        Generate recommendation materials for a single student.
         """
-        student_recommendations = {}
+        student_name = student_data["name"]
+        competencies = set(student_data["competencies"])
+        recommendations = set()
 
-        # Define the mapping of competencies to materials
-        competency_to_material = {
-            "main_verbs": "materi 1",
-            "tense": "materi 2",
-            "infinitives": "materi 3",
-            "passives": "materi 4",
-            "have_+_participle": "materi 5",
-            "auxiliary_verbs": "materi 6",
-            "pronouns": "materi 7",
-            "nouns": "materi 8",
-            "determiners": "materi 9",
-            "other_adjectives": "materi 10",
-            "prepositions": "materi 11",
-            "conjunctions": "materi 12",
-            "subject_verb_agreement": "materi 13"
-        }
+        # Iterate through each association rule
+        for idx, rule in rules.iterrows():
+            antecedents = set(rule['antecedents'])
+            consequents = set(rule['consequents'])
 
-        material_details = {
-            "materi 1": [
-                "Penggunaan kata kerja utama dalam kalimat",
-                "Perbedaan antara kata kerja aksi dan kata kerja statis",
-                "Bentuk kata kerja dalam tenses berbeda"],
-            "materi 2": [
-                "Present Simple dan Present Continuous",
-                "Past Simple dan Past Continuous",
-                "Future Simple dan Future Continuous",
-                "Present Perfect dan Past Perfect",
-                "Penggunaan tenses dalam konteks berbeda"],
-            "materi 3": [
-                "Penggunaan infinitive (to + verb) dalam kalimat",
-                "Infinitive dengan dan tanpa 'to'",
-                "Penggunaan infinitive setelah kata kerja tertentu"],
-            "materi 4": [
-                "Struktur kalimat pasif",
-                "Perubahan dari kalimat aktif ke pasif",
-                "Penggunaan pasif dalam berbagai tenses"],
-            "materi 5": [
-                "Penggunaan Present Perfect Tense",
-                "Struktur kalimat Present Perfect",
-                "Penggunaan Past Perfect Tense"],
-            "materi 6": [
-                "Penggunaan kata kerja bantu (do, does, did)",
-                "Penggunaan modal verbs (can, could, may, might, must, etc.)",
-                "Bentuk negatif dan pertanyaan menggunakan kata kerja bantu"],
-            "materi 7": [
-                "Penggunaan pronoun subjek (I, you, he, she, it, we, they)",
-                "Penggunaan pronoun objek (me, you, him, her, it, us, them)",
-                "Penggunaan possessive pronouns (my, your, his, her, its, our, their)"],
-            "materi 8": [
-                "Penggunaan kata benda dalam kalimat",
-                "Singular dan plural nouns",
-                "Countable dan uncountable nouns"],
-            "materi 9": [
-                "Penggunaan determiners (a, an, the)",
-                "Penggunaan quantifiers (some, any, few, many, etc.)",
-                "Penggunaan demonstrative determiners (this, that, these, those)"],
-            "materi 10": [
-                "Penggunaan adjective dalam kalimat",
-                "Perbandingan adjective (comparative dan superlative)",
-                "Penggunaan adjective dalam berbagai posisi dalam kalimat"],
-            "materi 11": [
-                "Penggunaan prepositions of place (in, on, at, etc.)",
-                "Penggunaan prepositions of time (in, on, at, etc.)",
-                "Prepositions setelah kata kerja tertentu (depend on, listen to, etc.)"],
-            "materi 12": [
-                "Penggunaan coordinating conjunctions (and, but, or, etc.)",
-                "Penggunaan subordinating conjunctions (because, although, if, etc.)",
-                "Penggunaan correlative conjunctions (either...or, neither...nor, etc.)"],
-            "materi 13": [
-                "Kesepakatan antara subjek dan kata kerja",
-                "Penggunaan kata kerja dengan subjek tunggal dan jamak",
-                "Kesepakatan dalam kalimat kompleks"]}
+            uncompeten = list(set(competency_to_material.keys()) - competencies)
 
-        # Iterate through each student's competencies
-        for student_data in student_competencies:
-            student_name = student_data["name"]
-            competencies = set(student_data["competencies"])
-            # Initialize an empty set to store recommended materials for each
-            # student
-            recommendations = set()
+            # Check if the student is missing any antecedents
+            missing_antecedents = antecedents - set(uncompeten)
 
-            # Iterate through each association rule
-            for idx, rule in rules.iterrows():
-                antecedents = set(rule['antecedents'])
-                consequents = set(rule['consequents'])
+            if missing_antecedents:
+                # Recommend all materials related to the missing antecedents
+                for antecedent in missing_antecedents:
+                    if antecedent in competency_to_material:
+                        recommendations.add(competency_to_material[antecedent])
 
-                uncompeten = list(
-                    set(competency_to_material.keys()) - competencies)
+        # Map student to recommended materials with details
+        student_material_details = []
+        for material in recommendations:
+            if material in material_details:
+                student_material_details.extend(material_details[material])
 
-                # Check if the student is missing any antecedents
-                missing_antecedents = antecedents - set(uncompeten)
-
-                if missing_antecedents:
-                    # Recommend all materials related to the missing
-                    # antecedents
-                    for antecedent in missing_antecedents:
-                        if antecedent in competency_to_material:
-                            recommendations.add(
-                                competency_to_material[antecedent])
-
-            # Map student to recommended materials with details
-            student_material_details = []
-            for material in recommendations:
-                if material in material_details:
-                    student_material_details.extend(material_details[material])
-
-            student_recommendations[student_name] = self.obj_nlg.generate_text(
-                student_material_details)
-
+        student_recommendations = {student_name: self.obj_nlg.generate_text(student_material_details)}
         return student_recommendations
 
     def transform_result_to_biner(self, test_result, questions):
