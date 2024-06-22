@@ -48,6 +48,12 @@ class RecommendationController:
             methods=['POST']
         )
 
+        self.blueprint.add_url_rule(
+            '/training/upload',
+            view_func=self.upload_training_file,
+            methods=['POST']
+        )
+
     @authenticate_token
     def upload_questions(self):
         """
@@ -186,6 +192,55 @@ class RecommendationController:
         return Response(
             message='Recommendation generated successfully',
             data=res,
+            code=200
+        ).to_dict()
+
+    @authenticate_token
+    def upload_training_file(self):
+        """
+        Upload training file to the recommendation system.
+        ---
+        parameters:
+         - name: body
+           in: body
+           required: true
+           schema:
+            type: object
+            properties:
+              file:
+               type: string
+            required: file
+           description: The path to the training file
+        responses:
+         200:
+          description: Training file uploaded successfully
+          schema:
+            type: object
+            properties:
+             code:
+              type: integer
+             message:
+              type: string
+             status:
+              type: string
+        Returns:
+          A success message.
+        """
+        if 'file' not in request.files:
+            return Response(
+                message='Request body must contain a "file" field',
+                code=400
+            ).to_dict()
+
+        file = request.files['file']
+
+        # parse file and move to uploads folder on the root directory
+        
+
+        self.recommendation_service.upload_training_file(file)
+
+        return Response(
+            message='Training file uploaded successfully',
             code=200
         ).to_dict()
 
