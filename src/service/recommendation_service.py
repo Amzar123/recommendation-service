@@ -50,10 +50,10 @@ class RecommendationService:
             transform_dataset = data_preprocessing.data_transformation(final_dataset)
 
             # Data modelling
-            items = fpgrowth(transform_dataset, 0.9, use_colnames=True)
+            items = fpgrowth(transform_dataset, 0.97, use_colnames=True)
 
             # Building association rules
-            rules = association_rules(items, metric="confidence", min_threshold=0.9)
+            rules = association_rules(items, metric="confidence", min_threshold=0.97)
 
             # Define the mapping of competencies to materials
             competency_to_material = {

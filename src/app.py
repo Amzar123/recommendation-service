@@ -18,10 +18,12 @@ from src.controller.auth_controller import AuthController
 from src.repo.recommendation_repo import RecommendationRepo
 from src.repo.student_repo import StudentRepo
 from src.repo.teacher_repo import TeacherRepo
+from src.repo.question_repo import QuestionRepo
 
 # Import service
 from src.service.recommendation_service import RecommendationService
 from src.service.auth_service import AuthService
+from src.service.question_service import QuestionService
 from src.model import *
 
 def create_app():
@@ -79,14 +81,16 @@ def create_app():
     recommendation_repository = RecommendationRepo(db)
     student_repo = StudentRepo(db)
     teacher_repo = TeacherRepo(db)
+    question_repo = QuestionRepo(db)
 
     # Register the blueprint from the service
     recommendation_service = RecommendationService(
         recommendation_repository, student_repo)
     auth_service = AuthService(teacher_repo, student_repo)
+    question_service = QuestionService(question_repo)
 
     # Register the blueprint from the controller
-    recommendation_controller = RecommendationController(recommendation_service)
+    recommendation_controller = RecommendationController(recommendation_service, question_service)
     auth_controller = AuthController(auth_service)
 
     app.register_blueprint(

@@ -5,10 +5,12 @@ Date: 2024-05-01
 """
 from flask import Blueprint, request
 from src.service.recommendation_service import RecommendationService
+from src.service.question_service import QuestionService
 from src.utils.response import Response
+import os
+import pandas as pd
 
 from src.middleware.auth import authenticate_token
-
 
 class RecommendationController:
     """
@@ -17,7 +19,7 @@ class RecommendationController:
     It provides methods to handle recommendation-related operations.
     """
 
-    def __init__(self, recommendation_service: RecommendationService):
+    def __init__(self, recommendation_service: RecommendationService, question_service: QuestionService):
         """
         Initializes a new instance of the RecommendationController class.
 
@@ -28,6 +30,7 @@ class RecommendationController:
           None
         """
         self.recommendation_service = recommendation_service
+        self.question_service = question_service
         self.blueprint = Blueprint('controller_blueprint', __name__)
 
         self.blueprint.add_url_rule(
@@ -235,14 +238,61 @@ class RecommendationController:
         file = request.files['file']
 
         # parse file and move to uploads folder on the root directory
-        
+        if file and self.allowed_file(file.filename):
+            filename = self.secure_filename(file.filename)    
 
-        self.recommendation_service.upload_training_file(file)
+            try:
+                self.parse_csv_and_save_to_db(file)
+                file.save(os.path.join(os.getenv("UPLOAD_FOLDER"), filename))
+            except FileExistsError:
+                return Response(
+                    message='Failed to upload training file',
+                    code=500
+                ).to_dict()        
+            
+            return Response(
+                message='Success file uploaded',
+                code=200
+            ).to_dict()
 
         return Response(
-            message='Training file uploaded successfully',
-            code=200
+            message='Failed to upload training file',
+            code=500
         ).to_dict()
+    
+    def parse_csv_and_save_to_db(self, file):
+      data = pd.read_csv(file)
+      questions_list = []
+      for index, row in data.iterrows():
+          if index < 1 or row['Questions'] == "Score":
+            continue
+          
+          question_dict = {
+          'question': row['Questions'],
+          'options': {
+              'A': row['A'],
+              'B': row['Options']['B'],
+              'C': row['Options']['C'],
+              'D': row['Options']['D']
+          },
+          'key': row['Key']
+          }
+
+          questions_list.append(question_dict)
+      self.question_service.create_question(questions_list)
+
+    
+    def secure_filename(self, filename):
+        """
+        Secure the filename.
+        """
+        return filename
+    
+    def allowed_file(self, filename):
+        """
+        Check if the file is allowed.
+        """
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'csv'}
 
     @authenticate_token
     def get_recommendations(self):
