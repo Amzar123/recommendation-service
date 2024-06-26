@@ -1,6 +1,9 @@
 # base image 
 FROM python:3.8.19-slim-bookworm
 
+# install gcc
+RUN apt-get update && apt-get install -y gcc
+
 # set working directory
 WORKDIR /app 
 
