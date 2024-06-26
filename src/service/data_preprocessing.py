@@ -54,12 +54,12 @@ class DataPreProcessing:
             "soal 1",
             "soal 2",
             "soal 3",
-            "soal 4 ",
+            "soal 4",
             "soal 5",
             "soal 6",
-            "soal 7 ",
-            "soal 8 ",
-            "soal 9 ",
+            "soal 7",
+            "soal 8",
+            "soal 9",
             "soal 10",
             "soal 11",
             "soal 12",
@@ -76,6 +76,11 @@ class DataPreProcessing:
             "soal 23",
             "soal 24",
             "soal 25",
+            "soal 26",
+            "soal 27",
+            "soal 28",
+            "soal 29",
+            "soal 30"
         ]
         index = 0
         for q in question_list:
@@ -144,6 +149,7 @@ class DataPreProcessing:
             # processing
             student["competencies"] = list(student["competencies"])
             student_list.append(student)
+            print(student)
 
         return student_list
 

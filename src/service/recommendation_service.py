@@ -39,21 +39,29 @@ class RecommendationService:
             data_preprocessing = DataPreProcessing()
 
             # Read data from CSV files
-            df_mapping_question_comp = pd.read_csv("./data/kompetensi-soal-etp.csv")
-            df_questions = pd.read_csv("./data/soal-etp.csv")
-            df_test_results = pd.read_csv("./data/hasil-tes-etp.csv")
+            df_mapping_question_comp = pd.read_csv("./data/mapping-assessment-question-competency.csv")
+            df_questions = pd.read_csv("./data/assessment-questions.csv")
+            df_test_results = pd.read_csv("./data/assessment-result.csv")
+
+            
 
             # Data preprocessing
+            # print(df_test_results[9])
             transformed_data = data_preprocessing.transform_result_to_biner(df_test_results, df_questions)
+            print(transformed_data)
             student_comp = data_preprocessing.mapping_student_competency(transformed_data, df_mapping_question_comp)
+            
             final_dataset = data_preprocessing.generate_final_dataset(student_comp)
+            
             transform_dataset = data_preprocessing.data_transformation(final_dataset)
 
+            
+
             # Data modelling
-            items = fpgrowth(transform_dataset, 0.97, use_colnames=True)
+            items = fpgrowth(transform_dataset, 0.95, use_colnames=True)
 
             # Building association rules
-            rules = association_rules(items, metric="confidence", min_threshold=0.97)
+            rules = association_rules(items, metric="confidence", min_threshold=0.95)
 
             # Define the mapping of competencies to materials
             competency_to_material = {
@@ -129,12 +137,14 @@ class RecommendationService:
                     "Kesepakatan dalam kalimat kompleks"]
             }
 
+            # print(student_comp[9])
+
             try:
                 with Pool(processes=4) as pool:
                     # Map the recommend_materials function to the list of students
                     results = pool.starmap(
                         data_preprocessing.recommend_materials, 
-                        [(student, rules, competency_to_material, material_details) for student in student_comp[:20]]
+                        [(student, rules, competency_to_material, material_details) for student in student_comp]
                     )
 
                 # Combine the results into a single dictionary
