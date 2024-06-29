@@ -75,6 +75,7 @@ class AuthController:
 
         user = self.auth_service.login(email, password)
         token = generate_token(email)
+        # token = "ini token"
         if user:
             return {
                 'code': 200,

@@ -3,6 +3,10 @@ FROM python:3.8.19-slim-bookworm
 
 # install gcc
 RUN apt-get update && apt-get install -y gcc
+RUN apt update -y && apt install -y build-essential libpq-dev
+
+RUN pip install --upgrade pip
+RUN pip install psycopg2-binary --no-binary psycopg2-binary
 
 # set working directory
 WORKDIR /app 

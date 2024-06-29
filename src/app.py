@@ -96,6 +96,7 @@ def create_app():
     app.register_blueprint(
         recommendation_controller.blueprint,
         url_prefix='/recommendations')
+        
     app.register_blueprint(auth_controller.blueprint)
 
 
