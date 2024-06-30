@@ -43,108 +43,87 @@ class RecommendationService:
             df_questions = pd.read_csv("./data/assessment-questions.csv")
             df_test_results = pd.read_csv("./data/assessment-result.csv")
 
-            
-
             # Data preprocessing
-            # print(df_test_results[9])
             transformed_data = data_preprocessing.transform_result_to_biner(df_test_results, df_questions)
-            print(transformed_data)
+
+            print(transformed_data.iloc[0])
+        
             student_comp = data_preprocessing.mapping_student_competency(transformed_data, df_mapping_question_comp)
             
             final_dataset = data_preprocessing.generate_final_dataset(student_comp)
             
             transform_dataset = data_preprocessing.data_transformation(final_dataset)
 
-            
-
             # Data modelling
-            items = fpgrowth(transform_dataset, 0.95, use_colnames=True)
+            items = fpgrowth(transform_dataset, 0.97, use_colnames=True)
 
             # Building association rules
-            rules = association_rules(items, metric="confidence", min_threshold=0.95)
+            rules = association_rules(items, metric="confidence", min_threshold=0.97)
 
             # Define the mapping of competencies to materials
             competency_to_material = {
-                "main_verbs": "materi 1",
-                "tense": "materi 2",
-                "infinitives": "materi 3",
-                "passives": "materi 4",
-                "have_+_participle": "materi 5",
-                "auxiliary_verbs": "materi 6",
-                "pronouns": "materi 7",
-                "nouns": "materi 8",
-                "determiners": "materi 9",
-                "other_adjectives": "materi 10",
-                "prepositions": "materi 11",
-                "conjunctions": "materi 12",
-                "subject_verb_agreement": "materi 13"
-            }
-
-            material_details = {
-                "materi 1": [
+                "main_verbs": [
                     "Penggunaan kata kerja utama dalam kalimat",
                     "Perbedaan antara kata kerja aksi dan kata kerja statis",
                     "Bentuk kata kerja dalam tenses berbeda"],
-                "materi 2": [
-                    "Present Simple dan Present Continuous",
+                "tense":  [
+                    "Simple dan Present Continuous",
                     "Past Simple dan Past Continuous",
                     "Future Simple dan Future Continuous",
                     "Present Perfect dan Past Perfect",
                     "Penggunaan tenses dalam konteks berbeda"],
-                "materi 3": [
+                "infinitives": [
                     "Penggunaan infinitive (to + verb) dalam kalimat",
                     "Infinitive dengan dan tanpa 'to'",
                     "Penggunaan infinitive setelah kata kerja tertentu"],
-                "materi 4": [
+                "passives": [
                     "Struktur kalimat pasif",
                     "Perubahan dari kalimat aktif ke pasif",
                     "Penggunaan pasif dalam berbagai tenses"],
-                "materi 5": [
+                "have_+_participle": [
                     "Penggunaan Present Perfect Tense",
                     "Struktur kalimat Present Perfect",
                     "Penggunaan Past Perfect Tense"],
-                "materi 6": [
+                "auxiliary_verbs": [
                     "Penggunaan kata kerja bantu (do, does, did)",
                     "Penggunaan modal verbs (can, could, may, might, must, etc.)",
                     "Bentuk negatif dan pertanyaan menggunakan kata kerja bantu"],
-                "materi 7": [
+                "pronouns": [
                     "Penggunaan pronoun subjek (I, you, he, she, it, we, they)",
                     "Penggunaan pronoun objek (me, you, him, her, it, us, them)",
                     "Penggunaan possessive pronouns (my, your, his, her, its, our, their)"],
-                "materi 8": [
+                "nouns": [
                     "Penggunaan kata benda dalam kalimat",
                     "Singular dan plural nouns",
                     "Countable dan uncountable nouns"],
-                "materi 9": [
+                "determiners": [
                     "Penggunaan determiners (a, an, the)",
                     "Penggunaan quantifiers (some, any, few, many, etc.)",
                     "Penggunaan demonstrative determiners (this, that, these, those)"],
-                "materi 10": [
+                "other_adjectives": [
                     "Penggunaan adjective dalam kalimat",
                     "Perbandingan adjective (comparative dan superlative)",
                     "Penggunaan adjective dalam berbagai posisi dalam kalimat"],
-                "materi 11": [
+                "prepositions": [
                     "Penggunaan prepositions of place (in, on, at, etc.)",
                     "Penggunaan prepositions of time (in, on, at, etc.)",
                     "Prepositions setelah kata kerja tertentu (depend on, listen to, etc.)"],
-                "materi 12": [
+                "conjunctions": [
                     "Penggunaan coordinating conjunctions (and, but, or, etc.)",
                     "Penggunaan subordinating conjunctions (because, although, if, etc.)",
                     "Penggunaan correlative conjunctions (either...or, neither...nor, etc.)"],
-                "materi 13": [
+                "subject_verb_agreement": [
                     "Kesepakatan antara subjek dan kata kerja",
                     "Penggunaan kata kerja dengan subjek tunggal dan jamak",
                     "Kesepakatan dalam kalimat kompleks"]
             }
-
-            # print(student_comp[9])
 
             try:
                 with Pool(processes=4) as pool:
                     # Map the recommend_materials function to the list of students
                     results = pool.starmap(
                         data_preprocessing.recommend_materials, 
-                        [(student, rules, competency_to_material, material_details) for student in student_comp]
+                        [(student, rules, competency_to_material) for student in student_comp[:1]]
                     )
 
                 # Combine the results into a single dictionary

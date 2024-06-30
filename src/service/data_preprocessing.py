@@ -13,7 +13,7 @@ class DataPreProcessing:
     def __init__(self) -> None:
         self.obj_nlg = NLGCore()
 
-    def recommend_materials(self, student_data, rules, competency_to_material, material_details):
+    def recommend_materials(self, student_data, rules, competency_to_material):
         """
         Generate recommendation materials for a single student.
         """
@@ -21,77 +21,40 @@ class DataPreProcessing:
         competencies = set(student_data["competencies"])
         recommendations = set()
 
-        # Iterate through each association rule
-        for idx, rule in rules.iterrows():
-            antecedents = set(rule['antecedents'])
-            consequents = set(rule['consequents'])
+        for competency in competencies:
+            print(f"Competency: {competency}")
+            recommendations.update(competency_to_material.get(competency, []))
 
-            uncompeten = list(set(competency_to_material.keys()) - competencies)
+            # Mencari rules yang relevan untuk kompetensi saat ini
+            # matching_rules = rules[rules['antecedents'].apply(lambda x: competency in x)]
 
-            # Check if the student is missing any antecedents
-            missing_antecedents = antecedents - set(uncompeten)
-
-            if missing_antecedents:
-                # Recommend all materials related to the missing antecedents
-                for antecedent in missing_antecedents:
-                    if antecedent in competency_to_material:
-                        recommendations.add(competency_to_material[antecedent])
-
-        # Map student to recommended materials with details
-        student_material_details = []
-        for material in recommendations:
-            if material in material_details:
-                student_material_details.extend(material_details[material])
-
-        student_recommendations = {student_name: self.obj_nlg.generate_text(student_material_details)}
+            # for _, rule in matching_rules.iterrows():
+            #     consequents = rule['consequents']
+            #     for consequent in consequents:
+            #         recommendations.update(competency_to_material.get(consequent, []))
+        
+        student_recommendations = {student_name: list(recommendations)}
         return student_recommendations
+
+
 
     def transform_result_to_biner(self, test_result, questions):
         """
         This function is to transform result to biner data
         """
-        question_list = [
-            "soal 1",
-            "soal 2",
-            "soal 3",
-            "soal 4",
-            "soal 5",
-            "soal 6",
-            "soal 7",
-            "soal 8",
-            "soal 9",
-            "soal 10",
-            "soal 11",
-            "soal 12",
-            "soal 13",
-            "soal 14",
-            "soal 15",
-            "soal 16",
-            "soal 17",
-            "soal 18",
-            "soal 19",
-            "soal 20",
-            "soal 21",
-            "soal 22",
-            "soal 23",
-            "soal 24",
-            "soal 25",
-            "soal 26",
-            "soal 27",
-            "soal 28",
-            "soal 29",
-            "soal 30"
-        ]
-        index = 0
+        question_list = []
+
+        for i in range(len(questions)):
+            question_list.append(f"soal {i+1}")
+        
         for q in question_list:
             for i in range(len(test_result)):
-                if questions["key"][index] == "":
+                if questions["key"][question_list.index(q)] == "":
                     test_result[q][i] = 0
-                elif test_result[q][i] == questions["key"][index]:
+                elif test_result[q][i] == questions["key"][question_list.index(q)]:
                     test_result[q][i] = 1
                 else:
                     test_result[q][i] = 0
-            index += 1
 
         return test_result
 
@@ -149,8 +112,6 @@ class DataPreProcessing:
             # processing
             student["competencies"] = list(student["competencies"])
             student_list.append(student)
-            print(student)
-
         return student_list
 
     def generate_final_dataset(self, mapped_data):

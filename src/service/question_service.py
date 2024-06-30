@@ -8,5 +8,4 @@ class QuestionService:
     #     return self.question_repository.get_questions(user_id)
     
     def create_question(self, data: list):
-        print("ini dia datanya ", data)
         return self.question_repository.create_many(data)

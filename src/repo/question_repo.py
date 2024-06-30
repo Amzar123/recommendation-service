@@ -19,7 +19,6 @@ class QuestionRepo:
                 # Insert questions
                 question_query = text(
                     'INSERT INTO questions (id, question, key_answer, created_at, updated_at) VALUES (:id, :question, :key_answer, NOW(), NOW())')
-                print(data)
                 questions = [{'id': uuid.uuid4(), 'question': q['question'], 'key_answer': q['key']} for q in data]
                 self.db.session.execute(question_query, questions)
 
