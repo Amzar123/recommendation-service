@@ -7,7 +7,7 @@ from src.repo.student_repo import StudentRepo
 from flask import jsonify
 from multiprocessing import Pool 
 
-from mlxtend.frequent_patterns import fpgrowth, association_rules
+from mlxtend.frequent_patterns import fpgrowth, association_rules, apriori
 
 import pandas as pd
 
@@ -45,8 +45,6 @@ class RecommendationService:
 
             # Data preprocessing
             transformed_data = data_preprocessing.transform_result_to_biner(df_test_results, df_questions)
-
-            print(transformed_data.iloc[0])
         
             student_comp = data_preprocessing.mapping_student_competency(transformed_data, df_mapping_question_comp)
             
@@ -55,7 +53,7 @@ class RecommendationService:
             transform_dataset = data_preprocessing.data_transformation(final_dataset)
 
             # Data modelling
-            items = fpgrowth(transform_dataset, 0.97, use_colnames=True)
+            items = apriori(transform_dataset, 0.97, use_colnames=True)
 
             # Building association rules
             rules = association_rules(items, metric="confidence", min_threshold=0.97)
@@ -123,7 +121,7 @@ class RecommendationService:
                     # Map the recommend_materials function to the list of students
                     results = pool.starmap(
                         data_preprocessing.recommend_materials, 
-                        [(student, rules, competency_to_material) for student in student_comp[:10]]
+                        [(student, rules, competency_to_material) for student in student_comp]
                     )
 
                 # Combine the results into a single dictionary
