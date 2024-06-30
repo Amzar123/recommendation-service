@@ -123,7 +123,7 @@ class RecommendationService:
                     # Map the recommend_materials function to the list of students
                     results = pool.starmap(
                         data_preprocessing.recommend_materials, 
-                        [(student, rules, competency_to_material) for student in student_comp[:1]]
+                        [(student, rules, competency_to_material) for student in student_comp[:10]]
                     )
 
                 # Combine the results into a single dictionary

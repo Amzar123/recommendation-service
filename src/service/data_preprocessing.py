@@ -21,8 +21,9 @@ class DataPreProcessing:
         competencies = set(student_data["competencies"])
         recommendations = set()
 
+        print(student_data)
+
         for competency in competencies:
-            print(f"Competency: {competency}")
             recommendations.update(competency_to_material.get(competency, []))
 
             # Mencari rules yang relevan untuk kompetensi saat ini
@@ -33,10 +34,9 @@ class DataPreProcessing:
             #     for consequent in consequents:
             #         recommendations.update(competency_to_material.get(consequent, []))
         
-        student_recommendations = {student_name: list(recommendations)}
+        # student_recommendations = {student_name:  self.obj_nlg.generate_text(list(recommendations))}
+        student_recommendations = {student_name:  list(recommendations)}
         return student_recommendations
-
-
 
     def transform_result_to_biner(self, test_result, questions):
         """
