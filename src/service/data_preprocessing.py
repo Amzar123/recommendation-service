@@ -133,43 +133,19 @@ class DataPreProcessing:
         """
         This function is to transform result to biner data
         """
-        question_list = [
-            "soal 1",
-            "soal 2",
-            "soal 3",
-            "soal 4 ",
-            "soal 5",
-            "soal 6",
-            "soal 7 ",
-            "soal 8 ",
-            "soal 9 ",
-            "soal 10",
-            "soal 11",
-            "soal 12",
-            "soal 13",
-            "soal 14",
-            "soal 15",
-            "soal 16",
-            "soal 17",
-            "soal 18",
-            "soal 19",
-            "soal 20",
-            "soal 21",
-            "soal 22",
-            "soal 23",
-            "soal 24",
-            "soal 25",
-        ]
-        index = 0
+        question_list = []
+
+        for i in range(len(questions)):
+            question_list.append(f"soal {i+1}")
+        
         for q in question_list:
             for i in range(len(test_result)):
-                if questions["key"][index] == "":
+                if questions["key"][question_list.index(q)] == "":
                     test_result[q][i] = 0
-                elif test_result[q][i] == questions["key"][index]:
+                elif test_result[q][i] == questions["key"][question_list.index(q)]:
                     test_result[q][i] = 1
                 else:
                     test_result[q][i] = 0
-            index += 1
 
         return test_result
 

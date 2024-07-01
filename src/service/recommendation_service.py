@@ -5,7 +5,7 @@ from src.service.data_preprocessing import DataPreProcessing
 from src.repo.recommendation_repo import RecommendationRepo
 from src.repo.student_repo import StudentRepo
 
-from mlxtend.frequent_patterns import fpgrowth, association_rules
+from mlxtend.frequent_patterns import fpgrowth, association_rules, apriori
 
 
 import pandas as pd
@@ -39,10 +39,9 @@ class RecommendationService:
         # fp_growth = FpGrowth()
 
         # read data from csv file
-        df_mapping_question_comp = pd.read_csv(
-            "./data/kompetensi-soal-etp.csv")
-        df_questions = pd.read_csv("./data/soal-etp.csv")
-        df_test_results = pd.read_csv("./data/hasil-tes-etp.csv")
+        df_mapping_question_comp = pd.read_csv("./data/mapping-assessment-question-competency.csv")
+        df_questions = pd.read_csv("./data/assessment-questions.csv")
+        df_test_results = pd.read_csv("./data/assessment-result.csv")
 
         # Data preprocessing
         transormed_data = data_preprocessing.transform_result_to_biner(
@@ -54,14 +53,16 @@ class RecommendationService:
             final_dataset)
 
         # Data modelling
-        items = fpgrowth(transform_dataset, 0.9, use_colnames=True)
+        items = apriori(transform_dataset, 0.96, use_colnames=True)
+
+        print("number of items ", len(items))
 
         # Building association rules
         rules = association_rules(
-            items, metric="confidence", min_threshold=0.9)
+            items, metric="confidence", min_threshold=0.96)
 
         # Generate recommendation materials
         student_recommendations = data_preprocessing.recommend_materials(
-            student_comp[:12], rules)
+            student_comp[:2], rules)
 
         return student_recommendations
