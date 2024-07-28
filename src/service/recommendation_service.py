@@ -7,7 +7,9 @@ from src.repo.student_repo import StudentRepo
 from flask import jsonify
 from multiprocessing import Pool 
 
-from mlxtend.frequent_patterns import fpgrowth, association_rules, apriori
+from mlxtend.frequent_patterns import fpgrowth, association_rules
+
+from src.service.apriori import Apriori
 
 import pandas as pd
 
@@ -38,7 +40,10 @@ class RecommendationService:
             # Create object for data preprocessing
             data_preprocessing = DataPreProcessing()
 
-            # Read data from CSV files
+            # create object apriori 
+            apriori = Apriori()
+
+            # read data from csv file
             df_mapping_question_comp = pd.read_csv("./data/mapping-assessment-question-competency.csv")
             df_questions = pd.read_csv("./data/assessment-questions.csv")
             df_test_results = pd.read_csv("./data/assessment-result.csv")
@@ -53,7 +58,7 @@ class RecommendationService:
             transform_dataset = data_preprocessing.data_transformation(final_dataset)
 
             # Data modelling
-            items = apriori(transform_dataset, 0.97, use_colnames=True)
+            items = apriori.apriori(transform_dataset, 0.97, use_colnames=True)
 
             # Building association rules
             rules = association_rules(items, metric="confidence", min_threshold=0.97)

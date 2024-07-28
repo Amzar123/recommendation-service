@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 question_text,main_verbs,tense,infinitives,passives,have_+_participle,auxiliary_verbs,pronouns,nouns,determiners,other_adjectives,prepositions,conjunctions,subject_verb_agreement
 "Lake trout, fish usually finding in deep, cool lakes, are greenish gray and are covered with pale sports",TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE
 "During the first 20 years of the space age, the US spent more than 90 billion dollars onto its civilian and military space programs.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
@@ -28,4 +29,36 @@ A mutation is result of a definite biochemical change in a gene that causes the 
 "The invention of reinforced concrete, plate glass, and steel in the mid-1800's was enabled architects to design and build extremely tall constructions, or ""skyscrapers""",TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,FALSE
 "Accoustic, the study of sounds, is one of the oldest of the physically sciences",FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
 "Each of functions of the body, even thinking, requires the expenditure of energy",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE
+=======
+question_text,main_verbs,tense,infinitives,passives,have_+_participle,auxiliary_verbs,pronouns,nouns,determiners,other_adjectives,prepositions,conjunctions,subject_verb_agreement
+"Lake trout, fish usually finding in deep, cool lakes, are greenish gray and are covered with pale sports",TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE
+"During the first 20 years of the space age, the US spent more than 90 billion dollars onto its civilian and military space programs.",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+Vitamin A and C and most of the B vitamin are retain in foods that have been canned,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+"Ella Baker spent her ault life working for social change by lecturing, writing, teacher, and organizing adult literacy program",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE
+"Gold can combined with silver in any proportion, but alloys with 50 to 60 percent silver are the strongest",TRUE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE
+"The camera obscura, a lensless precursor of the photogtaphic camera, consist of a darkened chamber, with light pass into it through a single",FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE
+"Lumber production was the main industry in Michigan until the early 1900's, which the automobile industry was established in Detroit",FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE
+Twenty minutes of vigorous exercise every day is very effect in helping a person to maintain pyshical fitness,FALSE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+"It was not until after Emily Dickinson's death in 1886 that, hidden away in her bureau, overly one thousand unpublished poems were discovered",FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+Rocks form within Earth are called intrusive or plutonic rocks because the magma from which they form often intrudes into neighboring rock,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,TRUE,FALSE,TRUE
+"Most fish swim by moving their tails from side to side, with little relatively body undulation",FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+"In its life expectancy, although in most other things, the Sun is a thypical star",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+"Machines need energy to function, whether it is animal or human muscle, wind or waters currents, or heat-generated energy, such as steam",FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+"The modern violin, the smallest and versatille instrument in the violin family, is tuned in fifths and produces tones ranging over four and a half octaves",TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,FALSE
+Norman Rockwell was a meticulous artist who paintings portayed family incident and well-defined characters with a wealth of supporting details.,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+"By the late twelve century, stained glass had emerged in Europe as an integral part of Gothic architecture",TRUE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE
+"The US, a nation with a highly diversified economy, is a major exporter of gain, fruit, chemical, aircraft, and cars",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+"Canada began cultivation wheat intensively in 1910, which led to a demand fot tools, machines, housing, and building supplies",FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE
+Magnesium has little structural strength and must be alloyed with another metals such as alumunium and zinc when it is to be subjected to stress,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE
+"Orchid seeds take up to eighteen months to mature before they sprout, and the young plants may need another two years to reach at the flowering",FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE
+"The oldest public edifice in Washington D.C., the white house was originally constructed in the 1790's, also has been rebuilt or extensively remodeled three times since",FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+"Mitosis is the normal process by which a cell divides, each new cell ending up with a same number of chromosomes as the parent cell",FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+There are a series of large-scale wind patterns all over Earth are called prevailing winds that have a direct effect on weather and climate,TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE
+"1 June, 1846, near Sacramento, California, a number of new settlers rebelled in the Bear Flag Revolt and proclaiming California an Independent republic",FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE
+A mutation is result of a definite biochemical change in a gene that causes the offspring to vary in some characteristic from the parents,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE
+"By 1899 Ransom olds had establish in Detroit, Michigan, the first factory in the US for the manufacture of automobiles",TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE
+"The invention of reinforced concrete, plate glass, and steel in the mid-1800's was enabled architects to design and build extremely tall constructions, or ""skyscrapers""",TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,FALSE
+"Accoustic, the study of sounds, is one of the oldest of the physically sciences",FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+"Each of functions of the body, even thinking, requires the expenditure of energy",FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE
+>>>>>>> 942d8dd1ae1c8ad4a7426584b4184f1f4e7dfd7c
 Gourds were introduced to what is now the southwestern US by earliest peoples who migrated north from Mesoamerica about 1700 years ago,TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE
