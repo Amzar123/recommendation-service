@@ -54,8 +54,8 @@ class RecommendationService:
         student_comp = data_preprocessing.mapping_student_competency(
             transormed_data, df_mapping_question_comp)
         final_dataset = data_preprocessing.generate_final_dataset(student_comp)
-        transform_dataset = data_preprocessing.data_transformation(
-            final_dataset)
+        # transform_dataset = data_preprocessing.data_transformation(
+        #     final_dataset)
 
         # Data modelling
         frequent_itemsets = apriori.apriori(final_dataset, 0.97)
