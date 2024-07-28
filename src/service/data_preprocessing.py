@@ -158,8 +158,6 @@ class DataPreProcessing:
         '''
 
         # Convert the first column (score) to a separate series and drop it
-        # from the DataFrame
-        scores = transformed_data.iloc[:, 0]
         student_answers = transformed_data.iloc[:, 1:]
 
         # Competencies list

@@ -1,86 +1,62 @@
 from itertools import combinations
-
+from collections import defaultdict
+import pandas as pd
 
 class Apriori:
     """
     This class is for handling apriori algorithm
     """
 
-    def __init__(self, transactions, min_support):
-        self.itemsets = {}
-        self.transactions = transactions
-        self.min_support = min_support
-
-    def subsets(self, itemset, transaction):
-        """
-        This function is to building subsets of the items
-        """
-        return [
-            subset for subset in combinations(
-                transaction,
-                len(itemset)) if set(subset).issubset(itemset)]
-
-    def is_valid_candidate(self, candidate, l_k_minus, k):
-        """
-        This function is for validating a candidate item
-        """
-        # Check if all subsets of size k-1 are in Lk_minus_1
-        subsets = combinations(candidate, k - 1)
-        for subset in subsets:
-            if subset not in l_k_minus:
-                return False
-        return True
-
-    def generate_candidates(self, l_k_minus, k):
-        """
-        This function is to generating candidate
-        """
-        candidates = set()
-        for itemset1 in l_k_minus:
-            for itemset2 in l_k_minus:
-                if len(itemset1.union(itemset2)) == k:
-                    candidate = itemset1.union(itemset2)
-                    if self.is_valid_candidate(candidate, l_k_minus, k):
-                        candidates.add(candidate)
-        return candidates
-
-    def apriori(self):
-        """
-        This is the main function to building apriori
-        """
-        itemsets = {}
-        # Inisialisasi L1
-        l1 = {}
-        for transaction in self.transactions:
+    def generate_single_items(self, transactions):
+        C1 = []
+        for transaction in transactions:
             for item in transaction:
-                l1[frozenset([item])] = l1.get(frozenset([item]), 0) + 1
+                if [item] not in C1:
+                    C1.append([item])
+        C1.sort()
+        return C1
 
-        # Pruning
-        l1 = {item: support for item, support in l1.items() if support >=
-              self.min_support}
-        itemsets[1] = l1
+    def prune(self, candidates, transactions, min_support):
+        Lk = []
+        item_count = defaultdict(int)
+        num_transactions = len(transactions)
 
-        k = 2
-        while True:
-            # Generate Ck
-            ck = self.generate_candidates(itemsets[k - 1], k)
-            if not ck:
-                break
+        for transaction in transactions:
+            for candidate in candidates:
+                if set(candidate).issubset(set(transaction)):
+                    item_count[tuple(candidate)] += 1
 
-            # Count support for Ck
-            count = {}
-            for transaction in self.transactions:
-                ct = self.subsets(ck, transaction)
-                for candidate in ct:
-                    count[candidate] = count.get(candidate, 0) + 1
+        support_data = {}
+        for candidate in candidates:
+            support = item_count[tuple(candidate)] / num_transactions
+            if support >= min_support:
+                Lk.append(candidate)
+                support_data[tuple(candidate)] = support
 
-            # Pruning
-            lk = {itemset: support for itemset,
-                  support in count.items() if support >= self.min_support}
-            if not lk:
-                break
+        return Lk, support_data
 
-            itemsets[k] = lk
+    def generate_candidates(self, Lk):
+        Ck_plus_1 = []
+        len_Lk = len(Lk)
+        for i in range(len_Lk):
+            for j in range(i + 1, len_Lk):
+                l1, l2 = Lk[i], Lk[j]
+                if l1[:-1] == l2[:-1] and l1[-1] != l2[-1]:
+                    candidate = sorted(list(set(l1) | set(l2)))
+                    if candidate not in Ck_plus_1:
+                        Ck_plus_1.append(candidate)
+        return Ck_plus_1
+
+    def apriori(self, transactions, min_support):
+        C1 = self.generate_single_items(transactions)
+        L1, support_data = self.prune(C1, transactions, min_support)
+        L = [L1]
+        k = 1
+        while L[k-1]:
+            Ck_plus_1 = self.generate_candidates(L[k-1])
+            Lk_plus_1, sup_data = self.prune(Ck_plus_1, transactions, min_support)
+            support_data.update(sup_data)
+            L.append(Lk_plus_1)
             k += 1
 
-        return itemsets
+        return support_data
